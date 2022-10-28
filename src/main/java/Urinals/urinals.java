@@ -89,8 +89,10 @@ public class urinals{
         }
         return count;
     }
-    public void writeToFile(String outputfile,int vacancies){
+    public String writeToFile(String outputfile,int vacancies){
         try {
+            if(!outputfile.matches("^[0-9a-z./]+"))
+                return "Bad Filename";
             FileWriter writer = new FileWriter(outputfile, true);
             if(writer==null)
                 throw new IOException();
@@ -101,10 +103,12 @@ public class urinals{
             bw.write(Integer.toString(vacancies));
             bw.newLine();
             bw.close();
+            return "";
         }
         catch(IOException e){
-            System.out.println("Error opening output file");
-            e.printStackTrace();
+            System.out.println("IOException");
+//            e.printStackTrace();
+            return "IOException";
         }
     }
     public String openFile(String filepath) {
@@ -113,9 +117,10 @@ public class urinals{
                 urinals obj=new urinals();
                 //Read from input file
                 File file=new File(filepath);
-                if(file==null)
-                    throw new IOException();
+                if(file==null) {
 
+                    throw new FileNotFoundException();
+                }
             //opening file to get the counter
                 File cfile=new File("src/counter.txt");
                 if(cfile==null)
@@ -131,13 +136,15 @@ public class urinals{
 
                 //reading input file
                 Scanner sc=new Scanner(file);
+                if(!sc.hasNextLine())
+                    return "File is Empty";
                 while(sc.hasNextLine()){
                     String s=sc.nextLine();
                     if(s.equals("-1"))
                             break;
 
                     int vacancies=obj.countUrinals(s);
-                    obj.writeToFile(outputfile,vacancies);
+                   String writeToFile= obj.writeToFile(outputfile,vacancies);
 
                 }
 
@@ -150,13 +157,21 @@ public class urinals{
             return outputfile;
 
         }
+        catch(FileNotFoundException e)
+        {
+            System.out.println("file not found");
+
+//            e.printStackTrace();
+            return "File Not Found";
+        }
         catch(IOException e)
         {
             System.out.println("Error in opening file");
 
-            e.printStackTrace();
-            return null;
+//            e.printStackTrace();
+            return "IOException";
         }
+
 
     }
 

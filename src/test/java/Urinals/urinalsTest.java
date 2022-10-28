@@ -30,7 +30,16 @@ class urinalsTest {
     @Test
     void testopenFile(){
         System.out.println("====== Nikitha Kommineni == TEST THREE EXECUTED =======");
-        assertEquals("src/rule.txt",obj.openFile("src/urinals.dat"));
-        assertEquals("src/rule1.txt",obj.openFile("src/urinals.dat"));
+        assertEquals("File Not Found",obj.openFile("src/urinals1.dat"));
+        assertEquals("File is Empty",obj.openFile("src/urinals.dat"));
+        assertEquals("IOException",obj.openFile("src/urinals.dat"));
+//        assertEquals("src/rule.txt",obj.openFile("src/urinals.dat"));
+//        assertEquals("src/rule1.txt",obj.openFile("src/urinals.dat"));
+    }
+
+    @Test
+    void testWriteToFile(){
+        assertEquals("Bad Filename",obj.writeToFile("src/123.txt",2));
+        assertEquals("IOException",obj.writeToFile("src/rule.txt",2));
     }
 }
